@@ -1,2 +1,0 @@
-# EmployeeAppMERN
- MERN fullstack
