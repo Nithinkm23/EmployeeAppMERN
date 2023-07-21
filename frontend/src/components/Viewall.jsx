@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import Header from './Header';
+import Addform from './Addform'
+
 const Viewall = () => {
 
   const [data, setData] = useState([])
@@ -35,49 +36,46 @@ const Viewall = () => {
     fetchDataFromApi()
   }, []);
 
-  
+  let finalJSX = <div className="container">
+    <div className="row">
+      <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
 
-  return (
-    <div>
-<Header/>
-      <div className="container">
-        <div className="row">
-          <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
+        <div className="row g-3" >
 
-            <div className="row g-3" >
+          {data.map(
+            (value, index) => {
+              return <div className="col col-12 col-sm-6 col-md-6 col-lg-6 ">
 
-              {data.map(
-                (value, index) => {
-                  return <div className="col col-12 col-sm-6 col-md-6 col-lg-6 ">
+                <div class="card mb-3" >
+                  <div class="row g-0">
 
-                    <div class="card mb-3" >
-                      <div class="row g-0">
-
-                        <div class="col-md-8">
-                          <div class="card-body">
-                            <h5 class="card-title">{value.name}</h5>
-                            <p class="card-text">{value.position}</p>
-                            <p class="card-text"><small class="text-body-secondary">{value.location}</small></p>
-                            <p class="card-text"><small class="text-body-secondary">${value.salary}</small></p>
-                            <p class="card-text"><small class="text-body-secondary">
-                              <button className='btn btn-danger' onClick={() => deleteBlog(value._id)}>Delete</button></small>
-                              &nbsp;
-                              <small class="text-body-secondary">
-                                <button className='btn btn-primary' onClick={() => updateBlog(value)}>Update</button></small>
-                            </p>
-                          </div>
-                        </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">{value.name}</h5>
+                        <p class="card-text">{value.position}</p>
+                        <p class="card-text"><small class="text-body-secondary">{value.location}</small></p>
+                        <p class="card-text"><small class="text-body-secondary">${value.salary}</small></p>
+                        <p class="card-text"><small class="text-body-secondary">
+                          <button className='btn btn-danger' onClick={() => deleteBlog(value._id)}>Delete</button></small>
+                          &nbsp;
+                          <small class="text-body-secondary">
+                            <button className='btn btn-primary' onClick={() => updateBlog(value)}>Update</button></small>
+                        </p>
                       </div>
                     </div>
                   </div>
-                }
-              )}
-            </div>
-          </div>
+                </div>
+              </div>
+            }
+          )}
         </div>
       </div>
-     
     </div>
+  </div>
+  if (update) finalJSX = <Addform method='put' data={singleValue} />
+
+  return (
+    finalJSX
   )
 }
 
