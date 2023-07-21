@@ -5,6 +5,11 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }))
 
+// PLEASE USE THE FOLLOWING FOR THE LOGIN
+// ADMIN CREDENTIALS: { USERNAME: admin, PASSWORD: password}
+// USER CREDENTIALS: { USERNAME: user, PASSWORD: password}
+
+
 //LOGIN API
 router.post('/login', async (req, res) => {
     let username = req.body.username;
