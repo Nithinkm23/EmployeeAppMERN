@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import Header from './Header';
 const Viewall = () => {
 
   const [data, setData] = useState([])
@@ -34,9 +35,11 @@ const Viewall = () => {
     fetchDataFromApi()
   }, []);
 
+  
+
   return (
     <div>
-
+<Header/>
       <div className="container">
         <div className="row">
           <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
@@ -73,7 +76,7 @@ const Viewall = () => {
           </div>
         </div>
       </div>
-      <p> <a href='/'>goback</a></p>
+     
     </div>
   )
 }

@@ -71,7 +71,7 @@ const Addform = () => {
                                 <a class="btn btn-primary" onClick={addPost} role="button">Submit</a>
                             </div>
 
-                            <a href="/"> <button type="button" class="btn btn-light">Back to Home</button></a>
+                            <a href="/viewall"> <button type="button" class="btn btn-light">Back</button></a>
 
                         </div>
 

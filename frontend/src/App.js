@@ -3,6 +3,7 @@ import './App.css';
 import Login from "./components/Login";
 import Viewall from "./components/Viewall";
 import Addform from "./components/Addform";
+import Header from "./components/Header";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/viewall" element={<Viewall />} />
         <Route path="/addform" element={<Addform/>} />
+        <Route path="/header" element={<Header/>} />
       </Routes>
     </BrowserRouter>
 
