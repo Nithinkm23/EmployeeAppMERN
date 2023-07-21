@@ -11,9 +11,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/viewall" element={<Main child={<Viewall/>}/>} />
-        <Route path="/addform" element={<Main child={<Addform/>}/>} />
-        <Route path="/header" element={<Header/>} />
+        <Route path="/viewall" element={<Main child={<Viewall />} />} />
+        <Route path="/addform" element={<Main child={<Addform method='post'
+              data={{ name: "", location: "", position: "", salary: "" }} />} />} />
+        <Route path="/header" element={<Header />} />
       </Routes>
     </BrowserRouter>
 

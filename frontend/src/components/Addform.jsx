@@ -2,9 +2,10 @@ import axios from   'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const Addform = () => {
+const Addform = (props) => {
     const navigate = useNavigate();
-    const [post, setPost] = useState({ name: "", location: "", position: "", salary: "" })
+    const [post, setPost] = useState(props.data)
+    
     const inputHandler = (e) => {
         const { name, value } = e.target;
         setPost({
@@ -15,6 +16,7 @@ const Addform = () => {
 
     const addPost = () => {
         console.log("Clicked", post)
+        if(props.method==="post"){
         axios.post("http://localhost:3000/api/addpost", post)
             .then((response) => {
                 if (response.data.message === "Post added successfully!") {
@@ -26,6 +28,21 @@ const Addform = () => {
                 }
             })
     }
+    if(props.method==="put")
+    {
+        axios.put("http://localhost:3000/api/edit/"+post._id,post)
+        .then((response)=>{
+            if(response.data.message==="Updated Successfully!"){
+                alert(response.data.message)
+                window.location.reload(false)
+            }
+            else{
+                alert(response.data.message)
+            }
+        })
+
+    }
+}
 
     return (
         <div>
