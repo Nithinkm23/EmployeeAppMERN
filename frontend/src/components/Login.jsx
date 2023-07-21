@@ -1,22 +1,32 @@
+import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
- const navigate=useNavigate();
- const [user,setUser]=useState({})
+    const navigate = useNavigate();
+    const [user, setUser] = useState({})
 
- const inputHandler=(e)=>{
-    console.log("onchange")
-    setUser({
-        ...user,[e.target.name]:e.target.value
-    })
-    console.log(user)
+    const inputHandler = (e) => {
+        console.log("onchange")
+        setUser({
+            ...user, [e.target.name]: e.target.value
+        })
+        console.log(user)
 
- }
-const addHandler=()=>{
-    console.log("Clicked",user)
-    
-}
+    }
+    const addHandler = () => {
+        console.log("Clicked", user)
+        axios.post("http://localhost:3000/api/login", user)
+            .then((response) => {
+                if (response.data.message ==="Login Successfully!!") {
+                    alert(response.data.message)
+                    navigate('/viewall')
+                }
+                else{
+                    alert(response.data.message)
+                }
+            })
+    }
 
 
 
@@ -59,7 +69,7 @@ const addHandler=()=>{
                             <button className="btn btn-success" onClick={addHandler}>Login</button>
                         </div>
 
-                      
+
 
                     </div>
                     {/* FORMS ENDS */}

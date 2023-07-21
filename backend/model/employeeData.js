@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const employeeSchema = mongoose.Schema({
+    userId: String,
     name: String,
     location: String,
     position: String,
