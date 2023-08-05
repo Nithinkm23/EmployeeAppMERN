@@ -7,9 +7,11 @@ const Viewall = () => {
   const [data, setData] = useState([])
   const [update, setUpdata] = useState(false);
   const [singleValue, setSingleValue] = useState([])
+  const [userToken, setUsertoken] = useState(sessionStorage.getItem("userToken"));
+  const [userRole, setUserrole] = useState(sessionStorage.getItem("userRole"));
 
   const fetchDataFromApi = () => {
-    axios.get('http://localhost:3000/api/viewall')
+    axios.get('http://localhost:3000/api/viewall/' + userToken)
       .then((response) => {
         console.log(response.data)
         setData(response.data)
@@ -18,12 +20,15 @@ const Viewall = () => {
   }
 
   const deleteBlog = (id) => {
+
     console.log("Delete Clicked")
     console.log(id)
-    axios.delete("http://localhost:3000/api/delete/" + id)
+    console.log(userRole)
+    axios.delete(`http://localhost:3000/api/delete/${id}/${userToken}/${userRole}`)
       .then((response) => {
         alert(response.data.message)
         window.location.reload(false)
+        fetchDataFromApi()
       })
   }
 
@@ -55,12 +60,14 @@ const Viewall = () => {
                         <p class="card-text">{value.position}</p>
                         <p class="card-text"><small class="text-body-secondary">{value.location}</small></p>
                         <p class="card-text"><small class="text-body-secondary">${value.salary}</small></p>
-                        <p class="card-text"><small class="text-body-secondary">
-                          <button className='btn btn-danger' onClick={() => deleteBlog(value._id)}>Delete</button></small>
-                          &nbsp;
-                          <small class="text-body-secondary">
-                            <button className='btn btn-primary' onClick={() => updateBlog(value)}>Update</button></small>
-                        </p>
+                        {userRole === "admin" && (
+                          <>
+                            <p class="card-text"><small class="text-body-secondary">
+                              <button className='btn btn-danger' onClick={() => deleteBlog(value._id)}>Delete</button></small>
+                              &nbsp;
+                              <small class="text-body-secondary">
+                                <button className='btn btn-primary' onClick={() => updateBlog(value)}>Update</button></small>
+                            </p></>)}
                       </div>
                     </div>
                   </div>

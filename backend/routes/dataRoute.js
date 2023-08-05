@@ -1,35 +1,50 @@
 const express = require('express')
 const router = express.Router();
 const employeeData = require('../model/employeeData')
+const auth = require('../auth/auth');
+const jwt = require('jsonwebtoken');
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }))
 
 //VIEW ALL POST
 
-router.get('/viewall', async (req, res) => {
+router.get('/viewall/:token', async (req, res) => {
 
     try {
         const data = await employeeData.find()
-        res.send(data);
+        jwt.verify(req.params.token, "empdata",
+            (error, decoded) => {
+                if (decoded && decoded.email) {
+                    res.json(data)
+                } else {
+                    res.json({ message: "Unauthorised user!" })
+                }
+
+            })
     }
     catch (error) {
-        res.status(400).json(error.message)
+        res.json({ message: "Not Successful!" })
 
     }
 })
 
 //ADD POST
 
-router.post('/addpost', (req, res) => {
+router.post('/addpost', auth, (req, res) => {
     try {
         const item = req.body;
         const newdata = new employeeData(item)
-        
+        jwt.verify(req.body.token, "empdata",
+            (error, decoded) => {
+                if (decoded && decoded.email) {
                     newdata.save();
-                    res.json({ message: "Post added successfully!" })
-                
-
+                    res.json({ message:"Post added successfully!" })
+                }
+                else {
+                    res.json({ message: "Unauthorised user!" })
+                }
+            })
     } catch (error) {
         console.log(error)
         res.json({ message: "Unable to Post!" })
@@ -38,25 +53,35 @@ router.post('/addpost', (req, res) => {
 })
 
 //DELETE POST
-
-router.delete("/delete/:id", async (req, res) => {
-    try {
+ 
+router.delete("/delete/:id/:token/:role", auth,  (req, res) => {
+    try { 
         const postId = req.params.id;
         console.log(postId)
-        await employeeData.findByIdAndDelete(postId);
-        res.json({ message: "Deleted Successfully" })
+        jwt.verify(req.params.token, "empdata",
+            (error, decoded) => {
+                if(decoded && decoded.email){
+                 employeeData.findByIdAndDelete(postId).exec();
+                res.json({ message: "Deleted Successfully" })
+                }
+                else{
+                    res.json({message:"Unautorized User!"})
+                }
+        })
+     
     } catch (error) {
         console.log(error);
         res.status(400).json('Unable to delete')
     }
 });
 
-router.put("/edit/:id", async (req, res) => {
+router.put("/edit/:id", auth, async (req, res) => {
     try {
 
         console.log(req.body)
         const postId = req.params.id;
         console.log(postId)
+
         await employeeData.findByIdAndUpdate(postId, req.body)
         res.json({ message: "Updated Successfully!" })
     } catch (error) {

@@ -5,7 +5,10 @@ import { useNavigate } from 'react-router-dom'
 const Addform = (props) => {
     const navigate = useNavigate();
     const [post, setPost] = useState(props.data)
-    
+    const[userToken,setUsertoken]=useState(sessionStorage.getItem("userToken"));
+    const[userRole,setUserrole]=useState(sessionStorage.getItem("userRole"));
+
+
     const inputHandler = (e) => {
         const { name, value } = e.target;
         setPost({
@@ -16,8 +19,16 @@ const Addform = (props) => {
 
     const addPost = () => {
         console.log("Clicked", post)
+        let data={
+            token:userToken,
+            role:userRole,
+            name:post.name,
+            position:post.position,
+            location:post.location,
+            salary:post.salary
+        }
         if(props.method==="post"){
-        axios.post("http://localhost:3000/api/addpost", post)
+        axios.post("http://localhost:3000/api/addpost", data)
             .then((response) => {
                 if (response.data.message === "Post added successfully!") {
                     alert(response.data.message)
@@ -30,7 +41,7 @@ const Addform = (props) => {
     }
     if(props.method==="put")
     {
-        axios.put("http://localhost:3000/api/edit/"+post._id,post)
+        axios.put("http://localhost:3000/api/edit/"+post._id,data)
         .then((response)=>{
             if(response.data.message==="Updated Successfully!"){
                 alert(response.data.message)

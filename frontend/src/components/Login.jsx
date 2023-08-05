@@ -19,6 +19,10 @@ const Login = () => {
         axios.post("http://localhost:3000/api/login", user)
             .then((response) => {
                 if (response.data.message ==="Login Successfully!!") {
+                    const token=response.data.token;
+                const role=response.data.data.role;
+                sessionStorage.setItem("userToken",token);
+                sessionStorage.setItem("userRole",role);
                     alert(response.data.message)
                     navigate('/viewall')
                 }
